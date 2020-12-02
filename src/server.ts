@@ -56,12 +56,18 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     }
 
     let image = await filterImageFromURL(image_url)
+    
 
-        if(image) return res.status(200).sendFile(image);
-      
-      
-        next(deleteLocalFiles([image]))    
+        if(image) {
+           res.status(200).sendFile(image);
+          deleteFile(image)
+        }
+        
   });
+
+  const deleteFile = () =>{
+
+  } 
 
 
   // Start the Server
