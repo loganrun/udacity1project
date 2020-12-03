@@ -52,22 +52,27 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     let {image_url} = req.query
 
     if(!image_url){
-      res.status(400).send({message:"Bad Request- must include image url"})
+      return res.status(400).send({message:"Bad Request- must include image url"})
     }
 
-    let image = await filterImageFromURL(image_url)
     
 
-        if(image) {
-           res.status(200).sendFile(image);
-          deleteFile(image)
-        }
+    filterImageFromURL(image_url).catch(e=>{
+      return res.status(400).send('Unable to filter image')
+
+    }).then(image => {
+
+      if (image.toString() == "error"){
+        return res.status(400).send('invalid')
+      }
+      return res.on('finish', () =>{
+        let fileArray: string[] = [image.toString()]
+        deleteLocalFiles(fileArray);
+      }).status(200).sendFile(image.toString())
+      
+    })
         
   });
-
-  const deleteFile = () =>{
-
-  } 
 
 
   // Start the Server
