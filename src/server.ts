@@ -55,8 +55,6 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       return res.status(400).send({message:"Bad Request- must include image url"})
     }
 
-    
-
     filterImageFromURL(image_url).catch(e=>{
       return res.status(400).send('Unable to filter image')
 
